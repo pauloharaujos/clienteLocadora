@@ -28,6 +28,15 @@ public class Locacao {
 		this.item = item;
                 this.cliente = cliente;
 	}
+        
+        public Locacao(String dtLocacao, String dtDevolucaoPrevista,int valorCobrado,Item item, Cliente cliente) {
+	
+		this.dtLocacao = dtLocacao;
+		this.dtDevolucaoPrevista = dtDevolucaoPrevista;		
+		this.valorCobrado = valorCobrado;		
+		this.item = item;
+                this.cliente = cliente;
+	}
 	
 	public Locacao(){
 		

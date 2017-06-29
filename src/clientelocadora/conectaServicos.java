@@ -31,7 +31,7 @@ public class conectaServicos {
             conectaServicos http = new conectaServicos();
             String chamadaWS;
             chamadaWS = "http://localhost:8080/dw_locadorapaulo/resources/locacoes/getLocacoes";
-            String json = http.sendGet(chamadaWS);
+            String json = http.sendGet(chamadaWS, "GET");
             Gson g = new Gson();
             
             //Locacao l = new Locacao();
@@ -46,13 +46,13 @@ public class conectaServicos {
         }
  
 	// HTTP GET request
-	String sendGet(String url) throws Exception {
+	String sendGet(String url, String method) throws Exception {
  
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
  
 		// optional default is GET
-		con.setRequestMethod("GET");
+		con.setRequestMethod(method);
  
 		//add request header
 		con.setRequestProperty("User-Agent", USER_AGENT);
@@ -77,18 +77,19 @@ public class conectaServicos {
 	}
  
 	// HTTP POST request
-	private void sendPost() throws Exception {
+	void sendPost(String url, String urlParameters, String method) throws Exception {
  
-		String url = "https://selfsolve.apple.com/wcResults.do";
+		//String url = "https://selfsolve.apple.com/wcResults.do";
 		URL obj = new URL(url);
 		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
  
 		//add reuqest header
-		con.setRequestMethod("POST");
+		con.setRequestMethod(method);
+                con.setRequestProperty("Content-Type", "application/json");
 		con.setRequestProperty("User-Agent", USER_AGENT);
 		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
  
-		String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
+		//String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
  
 		// Send post request
 		con.setDoOutput(true);

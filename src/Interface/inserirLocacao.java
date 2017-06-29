@@ -5,6 +5,14 @@
  */
 package Interface;
 
+import clientelocadora.conectaWS;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.domain.acervo.Item;
+import model.domain.cliente.Cliente;
+import model.domain.cliente.Locacao;
+
 /**
  *
  * @author Paulo
@@ -14,8 +22,9 @@ public class inserirLocacao extends javax.swing.JFrame {
     /**
      * Creates new form inserirLocacao
      */
-    public inserirLocacao() {
+    public inserirLocacao() throws Exception {
         initComponents();
+        atualizarCombos();
     }
 
     /**
@@ -28,47 +37,126 @@ public class inserirLocacao extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        lblItem = new javax.swing.JLabel();
+        lblCliente = new javax.swing.JLabel();
+        lblValor = new javax.swing.JLabel();
+        lblDtLocacao = new javax.swing.JLabel();
+        lblDtPrevista = new javax.swing.JLabel();
+        cmbItem = new javax.swing.JComboBox<>();
+        cmbCliente = new javax.swing.JComboBox<>();
+        txtValor = new javax.swing.JTextField();
+        txtDtLocacao = new javax.swing.JTextField();
+        txtDtPrevista = new javax.swing.JTextField();
+        btnInserir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 36)); // NOI18N
         jLabel1.setText("Inserir Locação");
 
-        jLabel2.setText("Nome do Item");
+        lblItem.setText("Nome do Item");
 
-        jLabel3.setText("Nome do Cliente");
+        lblCliente.setText("Nome do Cliente");
+
+        lblValor.setText("Valor");
+
+        lblDtLocacao.setText("Data Locação");
+
+        lblDtPrevista.setText("Data Prevista");
+
+        txtValor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtValorActionPerformed(evt);
+            }
+        });
+
+        btnInserir.setText("Inserir");
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(193, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(187, 187, 187))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCliente)
+                            .addComponent(lblValor)
+                            .addComponent(lblDtLocacao)
+                            .addComponent(lblDtPrevista)
+                            .addComponent(lblItem))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbItem, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(cmbCliente, 0, 269, Short.MAX_VALUE)
+                                .addComponent(txtValor)
+                                .addComponent(txtDtLocacao)
+                                .addComponent(txtDtPrevista))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)))
+                .addContainerGap(49, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(145, 145, 145))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(33, 33, 33)
-                .addComponent(jLabel2)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblItem)
+                    .addComponent(cmbItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
-                .addContainerGap(267, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCliente)
+                    .addComponent(cmbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblValor)
+                    .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDtLocacao)
+                    .addComponent(txtDtLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDtPrevista)
+                    .addComponent(txtDtPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnInserir, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtValorActionPerformed
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        // TODO add your handling code here:
+        Cliente cliente = (Cliente) cmbCliente.getSelectedItem();
+        Item item = (Item) cmbItem.getSelectedItem();
+        int valor = Integer.parseInt(txtValor.getText());
+        String dtLocacao = txtDtLocacao.getText();
+        String dtPrevista = txtDtPrevista.getText();
+        
+        Locacao l = new Locacao(dtLocacao, dtPrevista, "", valor, 0, item, cliente);
+        
+        conectaWS.inserirLocacao(l);
+        
+    }//GEN-LAST:event_btnInserirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -100,14 +188,43 @@ public class inserirLocacao extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new inserirLocacao().setVisible(true);
+                try {
+                    new inserirLocacao().setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(inserirLocacao.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnInserir;
+    private javax.swing.JComboBox<Object> cmbCliente;
+    private javax.swing.JComboBox<Object> cmbItem;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel lblCliente;
+    private javax.swing.JLabel lblDtLocacao;
+    private javax.swing.JLabel lblDtPrevista;
+    private javax.swing.JLabel lblItem;
+    private javax.swing.JLabel lblValor;
+    private javax.swing.JTextField txtDtLocacao;
+    private javax.swing.JTextField txtDtPrevista;
+    private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
+
+    private void atualizarCombos() throws Exception {
+      
+      List itens = conectaWS.getItens();
+      List clientes = conectaWS.getClientes();
+      
+      for(int i = 0; i < itens.size();i++){
+            Item i1 = (Item) itens.get(i);
+            cmbItem.addItem(i1);
+      }
+      
+      for(int i = 0; i < clientes.size();i++){
+         Cliente c1 = (Cliente) clientes.get(i);
+         cmbCliente.addItem(c1);
+      }
+    }
 }
