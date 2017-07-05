@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import javax.net.ssl.HttpsURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import model.domain.acervo.Item;
 import model.domain.cliente.Cliente;
 import model.domain.cliente.Locacao;
@@ -18,7 +19,7 @@ import model.domain.cliente.Locacao;
 public class conectaWS {
     	private final String USER_AGENT = "Mozilla/5.0";
  
-        public static void listarLocacoes() throws Exception{
+        public static List listarLocacoes() throws Exception{
             //conectaServicos http = new conectaServicos();
             conectaWS http = new conectaWS();
             String chamadaWS;
@@ -31,13 +32,15 @@ public class conectaWS {
             Type locacaoType = new TypeToken<List<Locacao>>() {}.getType();
             locacoes = g.fromJson(json, locacaoType);
  
-            for(int i = 0; i < locacoes.size();i++){
-                Locacao l1 = (Locacao) locacoes.get(i);
-                System.out.println("Data da Locacao : " + l1.getDtLocacao());
-            }
+//            for(int i = 0; i < locacoes.size();i++){
+//                Locacao l1 = (Locacao) locacoes.get(i);
+//                System.out.println("Data da Locacao : " + l1.getDtLocacao());
+//            }
+
+            return locacoes;
         }
         
-        public static void inserirLocacao(Locacao l) throws Exception{
+        public static int inserirLocacao(Locacao l) throws Exception{
             //conectaServicos http = new conectaServicos();
             conectaWS http = new conectaWS();
             String chamadaWS;
@@ -47,8 +50,9 @@ public class conectaWS {
             Type locacaoType = new TypeToken<Locacao>() {}.getType();
             
             String json = g.toJson(l, locacaoType);           
-            http.sendPost(chamadaWS, json, "POST");              
-                
+            int responseCode = http.sendPost(chamadaWS, json, "POST");   
+            
+            return responseCode;
         }
         
         public static List getItens() throws Exception{
@@ -114,7 +118,7 @@ public class conectaWS {
 	}
  
 	// HTTP POST request
-	void sendPost(String url, String urlParameters, String method) throws Exception {
+	int sendPost(String url, String urlParameters, String method) throws Exception {
  
 		URL obj = new URL(url);
                 //URL obj = new URL(null, url, new sun.net.www.protocol.https.Handler());
@@ -152,7 +156,9 @@ public class conectaWS {
 		in.close();
  
 		//print result
-		System.out.println(response.toString());
+		System.out.println(response.toString());  
+
+                return responseCode;
  
 	}
 }

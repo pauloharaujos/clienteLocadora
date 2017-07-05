@@ -9,6 +9,7 @@ import clientelocadora.conectaWS;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.domain.acervo.Item;
 import model.domain.cliente.Cliente;
 import model.domain.cliente.Locacao;
@@ -17,15 +18,15 @@ import model.domain.cliente.Locacao;
  *
  * @author Paulo
  */
-public class inserirLocacao extends javax.swing.JFrame {
+public class InserirLocacao extends javax.swing.JFrame {
 
-    /**
-     * Creates new form inserirLocacao
-     */
-    public inserirLocacao() throws Exception {
+    private static ListarLocacoes janListarLocacoes = null;
+    
+    public InserirLocacao(ListarLocacoes janAnterior) throws Exception {
         initComponents();
         atualizarCombos();
-    }
+        this.janListarLocacoes = janAnterior;
+    }  
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -154,7 +155,15 @@ public class inserirLocacao extends javax.swing.JFrame {
         
         Locacao l = new Locacao(dtLocacao, dtPrevista, "", valor, 0, item, cliente);
         
-        conectaWS.inserirLocacao(l);
+        try {
+            int responseCode = conectaWS.inserirLocacao(l);
+            if(responseCode == 204)
+                JOptionPane.showMessageDialog(null,"Locacão inserida com sucesso");
+            janListarLocacoes.atualizarTabela();
+            this.dispose();            
+        } catch (Exception ex) {
+            Logger.getLogger(InserirLocacao.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_btnInserirActionPerformed
 
@@ -175,23 +184,24 @@ public class inserirLocacao extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(inserirLocacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InserirLocacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(inserirLocacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InserirLocacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(inserirLocacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InserirLocacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(inserirLocacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InserirLocacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new inserirLocacao().setVisible(true);
+                    new InserirLocacao(janListarLocacoes).setVisible(true);
                 } catch (Exception ex) {
-                    Logger.getLogger(inserirLocacao.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(InserirLocacao.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });

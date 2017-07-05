@@ -3,9 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Paulo/Documents/NetBeansProjects/ClienteLocadora/src/model/domain/cliente/Locacao.java</file>
-            <file>file:/C:/Users/Paulo/Documents/NetBeansProjects/ClienteLocadora/src/Interface/ListarLocações.java</file>
-            <file>file:/C:/Users/Paulo/Documents/NetBeansProjects/ClienteLocadora/src/Interface/inserirLocacao.java</file>
+            <file>file:/C:/Users/Paulo/Documents/NetBeansProjects/ClienteLocadora/src/Interface/ListarLocacoes.java</file>
+            <file>file:/C:/Users/Paulo/Documents/NetBeansProjects/ClienteLocadora/src/Interface/InserirLocacao.java</file>
             <file>file:/C:/Users/Paulo/Documents/NetBeansProjects/ClienteLocadora/src/clientelocadora/conectaWS.java</file>
         </group>
     </open-files>

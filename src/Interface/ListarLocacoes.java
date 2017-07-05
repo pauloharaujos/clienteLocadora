@@ -6,19 +6,23 @@
 package Interface;
 
 import clientelocadora.conectaWS;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import model.domain.cliente.Locacao;
 
 /**
  *
  * @author Paulo
  */
-public class ListarLocações extends javax.swing.JFrame {
+public class ListarLocacoes extends javax.swing.JFrame {
 
     /**
      * Creates new form ListarLocações
      */
-    public ListarLocações() throws Exception {
+    public ListarLocacoes() throws Exception {
         initComponents();
         atualizarTabela();
     }
@@ -33,41 +37,38 @@ public class ListarLocações extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelaLocacoes = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        btnInserirLocacao = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaLocacoes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Item", "Cliente", "Valor", "Data da Locação", "Data de Devolução Prevista", "Data de Devolução Efetiva", "Multa"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabelaLocacoes);
 
         jLabel1.setFont(new java.awt.Font("Malgun Gothic Semilight", 3, 36)); // NOI18N
         jLabel1.setText("Locações");
 
         jMenu1.setText("Arquivo");
 
-        jMenuItem1.setText("Inserir Locação");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        btnInserirLocacao.setText("Inserir Locação");
+        btnInserirLocacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                btnInserirLocacaoActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(btnInserirLocacao);
 
         jMenuItem2.setText("Cancelar Locação");
         jMenu1.add(jMenuItem2);
@@ -105,9 +106,16 @@ public class ListarLocações extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void btnInserirLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirLocacaoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+        InserirLocacao inserirLocacao = null;
+        try {
+            inserirLocacao = new InserirLocacao(this);
+        } catch (Exception ex) {
+            Logger.getLogger(ListarLocacoes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        inserirLocacao.setVisible(true);
+    }//GEN-LAST:event_btnInserirLocacaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -126,40 +134,60 @@ public class ListarLocações extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ListarLocações.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListarLocacoes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ListarLocações.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListarLocacoes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ListarLocações.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListarLocacoes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListarLocações.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListarLocacoes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new ListarLocações().setVisible(true);
+                    new ListarLocacoes().setVisible(true);
                 } catch (Exception ex) {
-                    Logger.getLogger(ListarLocações.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ListarLocacoes.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem btnInserirLocacao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabelaLocacoes;
     // End of variables declaration//GEN-END:variables
 
-    private void atualizarTabela() throws Exception {
-       conectaWS.listarLocacoes();
+    public void atualizarTabela() throws Exception {
+       List locacoes = conectaWS.listarLocacoes();
+       DefaultTableModel model = (DefaultTableModel) tabelaLocacoes.getModel(); 
+       
+       for(int i=0; i < model.getRowCount(); i ++){ //Apaga todas as linhas da tabela
+           model.removeRow(i);
+       }
+       
+       for(int i = 0; i < locacoes.size();i++){ //Preenche a tabela
+            Object[] linha = new Object[7];
+            Locacao l1 = (Locacao) locacoes.get(i);                    
+            linha[0] = l1.getItem();
+            linha[1] = l1.getCliente();
+            linha[2] = l1.getValorCobrado();
+            linha[3] = l1.getDtLocacao();
+            linha[4] = l1.getDtDevolucaoPrevista();
+            linha[5] = l1.getDtDevolucaoEfetiva();
+            linha[6] = l1.getMultaCobrada();           
+            model.addRow(linha);           
+       }
+       
     }
 }
